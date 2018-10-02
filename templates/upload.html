@@ -9,7 +9,7 @@
 
 <div class ="container">
 	<div class="page-header">
-		<h1>File Anonymizer</h1>
+		<h1>Data Anonymizer</h1>
 		<p>Upload your files to be anonymized below!</p>
 	</div>
 </div>
@@ -17,7 +17,9 @@
 <div class ="container">
 	<form method=POST enctype=multipart/form-data action="{{ url_for('files_upload')}}">
 		<input type=file name=datafile>
-		<input type="submit">
+		<input type=text name=salt placeholder="Salt (<= 64 char)" maxlength=64>
+		<br>
+		<input type="submit" value="Submit">
 	</form>
 </div>
 {% endblock %}
