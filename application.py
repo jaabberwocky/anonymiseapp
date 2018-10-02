@@ -1,9 +1,12 @@
-from flask import Flask, render_template, request, flash, url_for, redirect
+from flask import Flask, render_template, request, flash, url_for, redirect, send_file
 from flask_bootstrap import Bootstrap
 from flask_uploads import UploadSet, configure_uploads, DATA
 import pandas as pd
 import json
 import time
+from passlib.hash import sha256_crypt
+import os
+import uuid
 
 # instantiate app objects
 application = Flask(__name__)
@@ -23,6 +26,25 @@ configure_uploads(application, datafiles)
 
 # set secret
 application.secret_key = configurations['SECRET_KEY']
+
+#### FUNCTIONS ####
+
+# pandas processing function to anonymise ids column
+def anonymise(filename, salt):
+	df = pd.read_csv(os.path.join('data', filename))
+
+	# process and dont display rounds and salt
+	df['id'] = df['id'].apply(sha256_crypt.using(salt=salt, rounds=1000).hash)
+	df['id'] = pd.Series(df['id']).str.split("$", n=4).str[4]
+	
+	# save CSV with UUID to ensure no collision
+	completed_filename = uuid.uuid4()
+	df.to_csv('data/%s.csv' % completed_filename, index=False)
+
+	# return this so it can be passed as URL
+	return completed_filename
+
+#### ROUTES ####
 
 @application.route('/')
 def index():
@@ -47,12 +69,21 @@ def files_upload():
 		# salt
 		salt = request.form['salt']
 
+		# process file
+		completed_filename = anonymise(filename, salt=salt)
+
 		# send flash to index
-		flash("%s with filesize of %.2fmb was uploaded in %.2fseconds.  Salt: %s" % (filename, file_size / 1024 / 1024, time.time() - tic, salt))
+		flash("%s with filesize of %.2fmb was processed in %.2fseconds.  Salt: %s" % (filename, file_size / 1024 / 1024, time.time() - tic, salt), "msg")
+		flash("%s" % completed_filename, "completed_filename")
 		return redirect(url_for('index'))
 	return render_template('upload.html')
 
-# pandas processing file
+@application.route('/downloadfile_<completed_filename>')
+def download_file(completed_filename):
+	
+	return send_file('data/%s.csv' % completed_filename, 
+		attachment_filename=completed_filename + '.csv', 
+		as_attachment=True)
 
 if __name__ == "__main__":
 	application.run(debug=True)

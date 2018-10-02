@@ -15,7 +15,8 @@ def main():
 		'id':ids,
 		'names':names_list,
 		})
-	df.to_csv('test_data.csv', index=False)
+	df.to_csv('data/test_data.csv', index=False)
+	print("Test set generated!")
 
 if __name__ == "__main__":
 	main()
