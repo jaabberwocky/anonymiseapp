@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash
 from flask_bootstrap import Bootstrap
 from flask_uploads import UploadSet, configure_uploads, DATA
 import pandas as pd
@@ -8,6 +8,7 @@ import time
 # instantiate app objects
 application = Flask(__name__)
 bootstrap = Bootstrap(application)
+
 
 # configure destination folder
 # NOTE TESTING!
@@ -19,6 +20,14 @@ application.config['UPLOADED_DATAFILES_DEST'] = configurations["SAVE_FILE_DESTIN
 datafiles = UploadSet('datafiles', DATA)
 configure_uploads(application, datafiles)
 
+# set secret
+application.secret_key = configurations['SECRET_KEY']
+
+@application.route('/')
+def index():
+	flash("flash test!!")
+	return render_template('index.html')
+
 @application.route('/upload', methods=['POST','GET'])
 def files_upload():
 	if request.method == 'POST':
@@ -28,7 +37,7 @@ def files_upload():
 		uploaded_file.seek(0,2)
 		file_size = uploaded_file.tell()
 		return "%s with filesize of %.2fmb was uploaded in %.2fseconds" % (filename, file_size / 1024 / 1024, time.time() - tic)
-	return render_template('index.html')
+	return render_template('upload.html')
 
 if __name__ == "__main__":
 	application.run(debug=True)
