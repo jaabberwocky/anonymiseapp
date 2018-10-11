@@ -17,7 +17,7 @@
 				{% for m in messages %}
 					<div class ="alert alert-info alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">x</button>
-					
+
 						<p>{{m}}</p>
 						<br>
 						{% with messages = get_flashed_messages(category_filter=["completed_filename"]) %}
@@ -32,7 +32,7 @@
 			{% endif %}
 		{% endwith %}
 		<p>Upload your files to be anonymized below!</p>
-		<p>Click <a href="{{url_for('files_upload')}}">here!</a></p>
+		<p>Click <a href="{{url_for('files_upload')}}">here</a>!</p>
 	</div>
 
 </div>

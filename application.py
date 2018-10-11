@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, url_for, redirect, send_file, session
+from flask import Flask, render_template, request, flash, url_for, redirect, send_file, session, current_app
 from flask_bootstrap import Bootstrap
 from flask_uploads import UploadSet, configure_uploads, DATA
 import pandas as pd
@@ -51,10 +51,11 @@ def anonymise(filename, column, salt=""):
 # pandas processing to return html view
 def returnhtmlview(filename):
 	df = pd.read_csv(os.path.join('data',filename))
-	return df.to_html(
+	return df.head(25).to_html(
 		bold_rows=True,
 		max_rows=50,
-		max_cols=25
+		max_cols=25,
+		classes=['table', 'table-striped']
 		)
 
 # pandas processing to return list of colnames
@@ -109,10 +110,20 @@ def processfile():
 
 @application.route('/downloadfile_<completed_filename>')
 def download_file(completed_filename):
+	# since we want to REMOVE the file after sending this request with send_file, 
+	# but this is not possible
+	# the workaround is to save it in memory, then serve the response
+	path = os.path.join("data", completed_filename+".csv")
+
+	def generate():
+		with open(path) as f:
+			yield from f
+		os.remove(path)
+
+	r = current_app.response_class(generate(), mimetype="text/csv")
+	r.headers.set('Content-Disposition', 'attachment', filename='data.csv')
+	return r
 	
-	return send_file('data/%s.csv' % completed_filename, 
-		attachment_filename=completed_filename + '.csv', 
-		as_attachment=True)
 
 @application.route('/selectcolumn', methods=["POST","GET"])
 def selectcolumn():

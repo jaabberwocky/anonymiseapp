@@ -15,13 +15,15 @@
 
 <div class ="container">
 <form method=POST enctype=multipart/form-data action="{{ url_for('selectcolumn')}}">
+	
+	<p>Select column to be hashed:  <select name="column">
 	{% for f in colnames %}
-	<select name="column">
 		<option value="{{f}}">{{f}}</option>
 	{% endfor %}
 </select>
 	<br>
-	<input type=text name=salt placeholder="Salt (<= 64 char)" maxlength=64>
+	<input type=text name=salt placeholder="Salt" maxlength=64>
+	<br>
 	<input type="submit" value="Submit">
 	
 </form>
