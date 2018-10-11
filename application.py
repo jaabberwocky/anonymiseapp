@@ -4,7 +4,7 @@ from flask_uploads import UploadSet, configure_uploads, DATA
 import pandas as pd
 import json
 import time
-from passlib.hash import sha256_crypt
+import hashlib
 import os
 import uuid
 
@@ -29,13 +29,19 @@ application.secret_key = configurations['SECRET_KEY']
 
 #### FUNCTIONS ####
 
+# hashing function to be applied to pandas dataframe
+# salt is prepended to string
+def hashthis(string, salt):
+	hash_string = salt+string
+	sha = hashlib.sha256(hash_string.encode()).hexdigest()
+	return sha
+
 # pandas processing function to anonymise ids column
-def anonymise(filename, salt):
+def anonymise(filename, column, salt=""):
 	df = pd.read_csv(os.path.join('data', filename))
 
-	# process and dont display rounds and salt
-	df['id'] = df['id'].apply(sha256_crypt.using(salt=salt, rounds=1000).hash)
-	df['id'] = pd.Series(df['id']).str.split("$", n=4).str[4]
+	# process salt
+	df[column] = df[column].apply(hashthis)
 	
 	# save CSV with UUID to ensure no collision
 	completed_filename = uuid.uuid4()
