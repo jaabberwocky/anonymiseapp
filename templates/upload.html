@@ -17,7 +17,6 @@
 <div class ="container">
 	<form method=POST enctype=multipart/form-data action="{{ url_for('files_upload')}}">
 		<input type=file name=datafile>
-		<input type=text name=salt placeholder="Salt (<= 64 char)" maxlength=64>
 		<br>
 		<input type="submit" value="Submit">
 	</form>

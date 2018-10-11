@@ -1,0 +1,31 @@
+{% extends "bootstrap/base.html" %}
+{% block head %}
+	{{ super() }}
+{% endblock %}
+
+{% block title %}File Anonymizer{% endblock %}
+
+
+{% block content %}
+
+<div class ="container">
+
+	{{html_view | safe}}
+</div>
+
+<div class ="container">
+<form method=POST enctype=multipart/form-data action="{{ url_for('selectcolumn')}}">
+	{% for f in colnames %}
+	<select name="column">
+		<option value="{{f}}">{{f}}</option>
+	{% endfor %}
+</select>
+	<br>
+	<input type=text name=salt placeholder="Salt (<= 64 char)" maxlength=64>
+	<input type="submit" value="Submit">
+	
+</form>
+</div>
+
+</div>
+{% endblock %}
