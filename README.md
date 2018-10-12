@@ -9,7 +9,8 @@ Simple data anonymiser app in **Flask** that implements the SHA256 hash function
 3. Navigate to `http://localhost:5000` to see the app!
 
 *Optional*
-1. Run `python testsetup.py` to remove the data folder
+1. Run `python testsetup.py` to remove the data folder's contents
+(Note: should not be needed after commit `8d43be15f4881f4bcd05d0bd073bd184dcf4d263` as files are cleared after each session)
 
 # Todo
 ~~1. Implement temp storage for files~~
