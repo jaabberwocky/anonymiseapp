@@ -1,6 +1,6 @@
 # Data Anonymiser!
 
-Simple data anonymiser app that implements the SHA256 hash function on a dataset on a column named "id". 
+Simple data anonymiser app in **Flask** that implements the SHA256 hash function on a dataset on a column that the user specifies. Will also apply salt to the hash if given.
 
 # How to run?
 1. Run `python generatetest.py` to generate test_data.csv
