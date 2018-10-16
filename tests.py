@@ -21,6 +21,7 @@ class ApplicationTests(TestCase):
         create_environment()
         generatetest()
         application.config['Testing'] = True
+        # we can then access the below as self.client
         self.client = application.test_client()
 
     def tearDown(self):
@@ -69,7 +70,7 @@ class ApplicationTests(TestCase):
         check if index is 200
         '''
 
-        resp = client.get('/')
+        resp = self.client.get('/')
         self.assertEqual(resp.status_code, 200)
 
     def test_upload_render(self):
@@ -99,18 +100,13 @@ class ApplicationTests(TestCase):
 
     def test_selectcolumn(self):
         '''
-        check if selectcolumn post is working correctly
+        check if selectcolumn post method is working correctly
         '''
-        with client as client:
-            with client.session_transaction() as sess:
+        with self.client as c:
+            with c.session_transaction() as sess:
                 sess['filename'] = "test_data.csv"
-            resp = client.post(
-                '/selectcolumn',
-                data=dict(salt="",
-                          column="id"))
-            self.assertRedirects(resp, "/processfile")
-            )
-
+            resp = c.post('/selectcolumn', data={"salt":"", "column":"id"})
+            self.assertRedirects(resp, "/processfile?column=id&salt=")
 
 if __name__ == "__main__":
     unittest.main()
