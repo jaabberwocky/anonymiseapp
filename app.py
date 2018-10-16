@@ -145,4 +145,4 @@ def selectcolumn():
 
 
 if __name__ == "__main__":
-	application.run(debug=True, port=80)
+	application.run(debug=True)
