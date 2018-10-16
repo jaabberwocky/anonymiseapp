@@ -7,5 +7,5 @@ install:
 script:
   - python tests.py
 notifications:
-  webhooks: https://hooks.slack.com/services/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
+  slack: hive-ida:7NWbmSoR5H3BGdtqC2SippOz
     
