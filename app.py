@@ -143,6 +143,5 @@ def selectcolumn():
 		colnames=colnames, 
 		html_view=html_view)
 
-
 if __name__ == "__main__":
 	application.run(debug=True)
