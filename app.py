@@ -16,17 +16,19 @@ try:
 	# load configurations json (kept secret)
 	configurations = json.loads(open("config.json", "r").read())
 
-	# set file destination
-	application.config['UPLOADED_DATAFILES_DEST'] = configurations["SAVE_FILE_DESTINATION"]
-	# set secret
-	application.secret_key = configurations['SECRET_KEY']
+	
 
 except FileNotFoundError:
 	configurations = {
 		"SAVE_FILE_DESTINATION":"data",
 		"SECRET_KEY": "askdfjasd"
 	}
-
+finally:
+	# set file destination
+	application.config['UPLOADED_DATAFILES_DEST'] = configurations["SAVE_FILE_DESTINATION"]
+	# set secret
+	application.secret_key = configurations['SECRET_KEY']
+	
 # declare files for upload set
 # DATA allows for only data extensions (".csv" etc)
 datafiles = UploadSet('datafiles', DATA)
