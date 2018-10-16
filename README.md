@@ -1,4 +1,5 @@
 # Data Anonymiser!
+[![Build Status](https://travis-ci.org/jaabberwocky/anonymiseapp.svg?branch=master)](https://travis-ci.org/jaabberwocky/anonymiseapp)
 
 Simple data anonymiser app in **Flask** that implements the SHA256 hash function on a dataset on a column that the user specifies. Will also apply salt to the hash if given.
 
