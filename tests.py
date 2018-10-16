@@ -77,7 +77,7 @@ class ApplicationTests(TestCase):
         '''
         check if upload is 200
         '''
-        client = application.test_client()
+        client = self.client
         resp = client.get('/upload')
         self.assertEqual(resp.status_code, 200)
 
