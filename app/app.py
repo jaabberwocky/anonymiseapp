@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, flash, url_for, redirect, send_file, session, current_app
 from flask import abort
 from flask_bootstrap import Bootstrap
-from flask_uploads import UploadSet, configure_uploads, DATA
+from flask_uploads import UploadSet, configure_uploads, DATA, patch_request_class
 import pandas as pd
 import json
 import hashlib
@@ -27,11 +27,15 @@ finally:
     application.config['UPLOADED_DATAFILES_DEST'] = configurations["SAVE_FILE_DESTINATION"]
     # set secret
     application.secret_key = configurations['SECRET_KEY']
+    =
 
 # declare files for upload set
 # DATA allows for only data extensions (".csv" etc)
 datafiles = UploadSet('datafiles', DATA)
 configure_uploads(application, datafiles)
+
+# set max upload size to 500MB
+patch_request_class(app, 500 * 1024 * 1024)
 
 #### FUNCTIONS ####
 

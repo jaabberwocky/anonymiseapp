@@ -18,9 +18,6 @@ COPY wsgi.py /root/apps
 # change user permissions
 RUN chmod +x /root/apps/*
 
-# get venv
-RUN pip install virtualenv
-
 # setup runtime stuff
 RUN cd /root/apps
 RUN pip install -r /root/apps/requirements.txt
