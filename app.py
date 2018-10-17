@@ -12,19 +12,27 @@ import uuid
 application = Flask(__name__)
 bootstrap = Bootstrap(application)
 
-# load configurations json (kept secret)
-configurations = json.loads(open("config.json", "r").read())
+try:
+	# load configurations json (kept secret)
+	configurations = json.loads(open("config.json", "r").read())
 
-# set file destination
-application.config['UPLOADED_DATAFILES_DEST'] = configurations["SAVE_FILE_DESTINATION"]
+	
 
+except FileNotFoundError:
+	configurations = {
+		"SAVE_FILE_DESTINATION":"data",
+		"SECRET_KEY": "askdfjasd"
+	}
+finally:
+	# set file destination
+	application.config['UPLOADED_DATAFILES_DEST'] = configurations["SAVE_FILE_DESTINATION"]
+	# set secret
+	application.secret_key = configurations['SECRET_KEY']
+	
 # declare files for upload set
 # DATA allows for only data extensions (".csv" etc)
 datafiles = UploadSet('datafiles', DATA)
 configure_uploads(application, datafiles)
-
-# set secret
-application.secret_key = configurations['SECRET_KEY']
 
 #### FUNCTIONS ####
 
@@ -143,7 +151,6 @@ def selectcolumn():
 	return render_template('selectcolumn.html', 
 		colnames=colnames, 
 		html_view=html_view)
-
 
 if __name__ == "__main__":
 	application.run(debug=True)

@@ -4,10 +4,10 @@ import string
 import names
 
 
-def main():
+def generatetest(n=100, filename="test_data"):
 	ids = []
 	names_list = []
-	for _ in range(100):
+	for _ in range(n):
 		ids.append(''.join(random.choices(string.ascii_letters + string.digits, k=9)))
 		names_list.append(names.get_full_name())
 
@@ -15,8 +15,8 @@ def main():
 		'id':ids,
 		'names':names_list,
 		})
-	df.to_csv('data/test_data.csv', index=False)
-	print("Test set generated!")
-
+	df.to_csv('data/{}.csv'.format(filename), index=False)
+	
 if __name__ == "__main__":
-	main()
+	generatetest()
+	print("test set generated!")
