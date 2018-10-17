@@ -14,6 +14,7 @@ COPY startup.sh /root/apps
 COPY app/__init__.py /root/apps/app
 COPY __init__.py /root/apps
 COPY wsgi.py /root/apps
+COPY app/static /root/apps/app/static
 
 # change user permissions
 RUN chmod +x /root/apps/*

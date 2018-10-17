@@ -1,9 +1,4 @@
-{% extends "bootstrap/base.html" %}
-{% block head %}
-	{{ super() }}
-{% endblock %}
-
-{% block title %}File Anonymizer{% endblock %}
+{% extends "base.html" %}
 
 
 {% block content %}
@@ -11,7 +6,7 @@
 <div class ="container">
 
 	<div class="page-header">
-		<h1>Data Anonymizer</h1>
+		<h1><a href="/">Data Anonymizer</a></h1>
 		{% with messages = get_flashed_messages(category_filter=["msg"]) %}
 			{% if messages %}
 				{% for m in messages %}
