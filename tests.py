@@ -10,7 +10,7 @@ from create_environment import create_environment
 from generatetest import generatetest
 
 # load in application
-from app import hashthis, anonymise, application, returnhtmlview, returncolnames
+from app.app import hashthis, anonymise, application, returnhtmlview, returncolnames
 
 
 class ApplicationTests(TestCase):
