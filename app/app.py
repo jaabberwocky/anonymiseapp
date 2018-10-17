@@ -34,7 +34,7 @@ datafiles = UploadSet('datafiles', DATA)
 configure_uploads(application, datafiles)
 
 # set max upload size to 500MB
-patch_request_class(app, 500 * 1024 * 1024)
+patch_request_class(application, 500 * 1024 * 1024)
 
 #### FUNCTIONS ####
 
