@@ -7,5 +7,5 @@ install:
 script:
   - python tests.py
 notifications:
-  slack: hive-ida:7NWbmSoR5H3BGdtqC2SippOz
+  slack: gu
     
