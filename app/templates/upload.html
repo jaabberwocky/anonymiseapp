@@ -7,6 +7,14 @@
 
 {{ super() }}
 
+<div class="container">
+<div class ="alert alert-info alert-dismissible" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">x</button>
+
+		<p>Large filesizes (up to 500MB) are supported. Please be patient as the server processes your files!</p>
+	</div>
+</div>
+
 <div class ="container">
 	<form method=POST enctype=multipart/form-data action="{{ url_for('files_upload')}}">
 		<input type=file name=datafile>
