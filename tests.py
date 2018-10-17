@@ -16,7 +16,8 @@ from app import hashthis, anonymise, application, returnhtmlview, returncolnames
 class ApplicationTests(TestCase):
 
     def setUp(self):
-        ''' make sure that the test_data set is created each time
+        ''' 
+        make sure that the test_data set is created each time
         '''
         create_environment()
         generatetest()
