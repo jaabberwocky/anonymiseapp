@@ -1,2 +1,2 @@
 #!/bin/sh
-sudo exec gunicorn -w 4 --bind 0.0.0.0:80 wsgi
+exec gunicorn -w 4 --bind 0.0.0.0:80 wsgi
