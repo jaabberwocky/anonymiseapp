@@ -67,7 +67,7 @@ def anonymise(filename, column, salt=""):
 
 
 def returnhtmlview(filename):
-    df = pd.read_csv(os.path.join('data', filename))
+    df = pd.read_csv(os.path.join('data', filename), nrows=50)
     return df.head(25).to_html(
         bold_rows=True,
         max_rows=50,
@@ -79,7 +79,7 @@ def returnhtmlview(filename):
 
 
 def returncolnames(filename):
-    df = pd.read_csv(os.path.join('data', filename))
+    df = pd.read_csv(os.path.join('data', filename), nrows=20)
     return list(df.columns.values)
 
 #### ROUTES ####
