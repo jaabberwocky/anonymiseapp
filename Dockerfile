@@ -17,7 +17,7 @@ COPY wsgi.py /root/apps
 COPY app/static /root/apps/app/static
 
 # change user permissions
-RUN chmod +x /root/apps/*
+RUN chmod g+rwx /root/apps/*
 
 # setup runtime stuff
 RUN cd /root/apps
@@ -29,4 +29,4 @@ ENV PYTHONPATH "${PYTHONPATH}:/root/apps"
 # run server
 EXPOSE 5000
 ENTRYPOINT ["/root/apps/startup.sh"]
-CMD ["sudo"]
+CMD ["exec"]

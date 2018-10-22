@@ -7,7 +7,7 @@ Simple data anonymiser app in **Flask** that implements the SHA256 hash function
 1. Run `python generatetest.py` to generate test_data.csv
 2. Make sure dependencies are present. Run `pip install -r requirements.txt`, (*optional to use virtualenv*)
 3. Run `python create_environment.py` to create environment
-4. Run `python application.py` to run the app
+4. Run `gunicorn wsgi` to run the app
 5. Navigate to `http://localhost:5000` to see the app!
 
 *Optional*
