@@ -28,5 +28,4 @@ ENV PYTHONPATH "${PYTHONPATH}:/root/apps"
 
 # run server
 EXPOSE 5000
-ENTRYPOINT ["/root/apps/startup.sh"]
-CMD ["exec"]
+CMD ["/root/apps/startup.sh"]
