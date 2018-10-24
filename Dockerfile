@@ -10,7 +10,6 @@ COPY app/app.py /root/apps/app
 ADD app/templates/ /root/apps/app/templates
 COPY config.json /root/apps
 COPY requirements.txt /root/apps
-COPY startup.sh /root/apps
 COPY app/__init__.py /root/apps/app
 COPY __init__.py /root/apps
 COPY wsgi.py /root/apps
@@ -28,4 +27,5 @@ ENV PYTHONPATH "${PYTHONPATH}:/root/apps"
 
 # run server
 EXPOSE 5000
+WORKDIR /root/apps
 CMD ["gunicorn", "-w", "4", "--bind", "0.0.0.0:5000", "-t", "9000", "wsgi"]
