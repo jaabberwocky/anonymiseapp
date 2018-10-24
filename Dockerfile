@@ -28,4 +28,4 @@ ENV PYTHONPATH "${PYTHONPATH}:/root/apps"
 
 # run server
 EXPOSE 5000
-CMD ["/root/apps/startup.sh"]
+CMD ["gunicorn", "-w", "4", "--bind", "0.0.0.0:5000", "-t", "9000", "wsgi"]
