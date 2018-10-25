@@ -1,9 +1,6 @@
 FROM python:3.6
 MAINTAINER tobias.leong "tobias@data.gov.sg"
 
-# create necessary file system
-RUN mkdir /data
-
 # copy entire directory over
 COPY * /
 COPY /app /app/
