@@ -103,7 +103,7 @@ def files_upload():
         # save to SESSION var to be accessed later
         session['filename'] = filename
 
-        return redirect(url_for("selectcolumn"))
+        return redirect(url_for("selectcolumn"), _scheme="https")
     return render_template('upload.html')
 
 
@@ -128,7 +128,7 @@ def processfile():
     # send flash to index
     flash("%s is processed.  Salt: %s" % (filename, salt), "msg")
     flash("%s" % completed_filename, "completed_filename")
-    return redirect(url_for('index'))
+    return redirect(url_for('index'), _scheme="https")
 
 
 @application.route('/downloadfile_<completed_filename>')
@@ -155,7 +155,7 @@ def selectcolumn():
         salt = request.form['salt']
         return redirect(url_for('processfile',
                                 column=column,
-                                salt=salt))
+                                salt=salt), _scheme="https")
 
     filename = session['filename']
 
