@@ -6,10 +6,9 @@ COPY * /
 COPY /app /app/
 
 # change user permissions as per Nectar req
-RUN chmod g+rwx .
+RUN chmod -R g+rwx app/
 
 # setup runtime stuff
-RUN cd .
 RUN pip install -r requirements.txt
 
 # run server
