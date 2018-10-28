@@ -10,7 +10,8 @@ import uuid
 
 # instantiate app objects
 application = Flask(__name__)
-bootstrap = Bootstrap(application)
+Bootstrap(application)
+application.config['BOOTSTRAP_SERVE_LOCAL'] = True
 
 try:
     # load configurations json (kept secret)
@@ -19,7 +20,7 @@ try:
 
 except FileNotFoundError:
     configurations = {
-        "SAVE_FILE_DESTINATION": "data",
+        "SAVE_FILE_DESTINATION": "tmp",
         "SECRET_KEY": "askdfjasd"
     }
 finally:
@@ -51,14 +52,14 @@ def hashthis(string, salt):
 
 
 def anonymise(filename, column, salt=""):
-    df = pd.read_csv(os.path.join('data', filename))
+    df = pd.read_csv(os.path.join('tmp', filename))
 
     # process salt
     df[column] = df[column].apply(hashthis, salt=salt)
 
     # save CSV with UUID to ensure no collision
     completed_filename = uuid.uuid4()
-    df.to_csv('data/%s.csv' % completed_filename, index=False)
+    df.to_csv('tmp/%s.csv' % completed_filename, index=False)
 
     # return filename so it can be passed as URL
     return completed_filename
@@ -67,7 +68,7 @@ def anonymise(filename, column, salt=""):
 
 
 def returnhtmlview(filename):
-    df = pd.read_csv(os.path.join('data', filename), nrows=50)
+    df = pd.read_csv(os.path.join('tmp', filename), nrows=50)
     return df.head(25).to_html(
         bold_rows=True,
         max_rows=50,
@@ -79,7 +80,7 @@ def returnhtmlview(filename):
 
 
 def returncolnames(filename):
-    df = pd.read_csv(os.path.join('data', filename), nrows=20)
+    df = pd.read_csv(os.path.join('tmp', filename), nrows=20)
     return list(df.columns.values)
 
 #### ROUTES ####
@@ -103,7 +104,7 @@ def files_upload():
         # save to SESSION var to be accessed later
         session['filename'] = filename
 
-        return redirect(url_for("selectcolumn"))
+        return redirect(url_for("selectcolumn", _scheme="https", _external=True))
     return render_template('upload.html')
 
 
@@ -123,12 +124,12 @@ def processfile():
     session['completed_filename'] = completed_filename
 
     # now that file is processed, remove the original upload from server
-    os.remove(os.path.join('data', filename))
+    os.remove(os.path.join('tmp', filename))
 
     # send flash to index
     flash("%s is processed.  Salt: %s" % (filename, salt), "msg")
     flash("%s" % completed_filename, "completed_filename")
-    return redirect(url_for('index'))
+    return redirect(url_for('index', _scheme="https", _external=True))
 
 
 @application.route('/downloadfile_<completed_filename>')
@@ -136,7 +137,7 @@ def download_file(completed_filename):
     # since we want to REMOVE the file after sending this request with send_file,
     # but this is not possible
     # the workaround is to save it in memory, then serve the response
-    path = os.path.join("data", completed_filename+".csv")
+    path = os.path.join("tmp", completed_filename+".csv")
 
     def generate():
         with open(path) as f:
@@ -155,7 +156,7 @@ def selectcolumn():
         salt = request.form['salt']
         return redirect(url_for('processfile',
                                 column=column,
-                                salt=salt))
+                                salt=salt, _scheme="https", _external=True))
 
     filename = session['filename']
 
