@@ -10,7 +10,8 @@ import uuid
 
 # instantiate app objects
 application = Flask(__name__)
-bootstrap = Bootstrap(application)
+Bootstrap(application)
+application.config['BOOTSTRAP_SERVE_LOCAL'] = True
 
 try:
     # load configurations json (kept secret)
