@@ -26,7 +26,7 @@ class ApplicationTests(TestCase):
         self.client = application.test_client()
 
     def tearDown(self):
-        shutil.rmtree("data")
+        shutil.rmtree("tmp")
 
     def create_app(self):
 
@@ -50,7 +50,7 @@ class ApplicationTests(TestCase):
         '''
         completed_filename = anonymise('test_data.csv', column='id')
         self.assertTrue(os.path.isfile(os.path.join(
-            os.getcwd(), "data", str(completed_filename) + ".csv")))
+            os.getcwd(), "tmp", str(completed_filename) + ".csv")))
 
     def test_htmlview(self):
         '''
@@ -91,7 +91,7 @@ class ApplicationTests(TestCase):
         # we use this to OPEN our test data created in setUp
         # make sure follow_redirects is not specified, otherwise you will get 200 response
         # from '/selectcolumn'
-        with open(os.path.join(os.getcwd(), "data", "test_data.csv"), 'rb') as f:
+        with open(os.path.join(os.getcwd(), "tmp", "test_data.csv"), 'rb') as f:
             data['datafile'] = (f, f.name)
             resp = client.post(
                 '/upload',
@@ -106,8 +106,9 @@ class ApplicationTests(TestCase):
         with self.client as c:
             with c.session_transaction() as sess:
                 sess['filename'] = "test_data.csv"
-            resp = c.post('/selectcolumn', data={"salt":"", "column":"id"})
+            resp = c.post('/selectcolumn', data={"salt": "", "column": "id"})
             self.assertRedirects(resp, "/processfile?column=id&salt=")
+
 
 if __name__ == "__main__":
     unittest.main()
