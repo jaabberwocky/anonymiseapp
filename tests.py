@@ -97,7 +97,10 @@ class ApplicationTests(TestCase):
                 '/upload',
                 data=data,
                 headers={'content-Type': 'multipart/form-data'})
-        self.assertRedirects(resp, "/selectcolumn")
+        self.assertRedirects(
+            resp,
+            "https://localhost/selectcolumn",
+        )
 
     def test_selectcolumn(self):
         '''
@@ -106,8 +109,14 @@ class ApplicationTests(TestCase):
         with self.client as c:
             with c.session_transaction() as sess:
                 sess['filename'] = "test_data.csv"
-            resp = c.post('/selectcolumn', data={"salt": "", "column": "id"})
-            self.assertRedirects(resp, "/processfile?column=id&salt=")
+            resp = c.post(
+                '/selectcolumn',
+                data={"salt": "", "column": "id"}
+            )
+            self.assertRedirects(
+                resp,
+                "https://localhost/processfile?column=id&salt=",
+            )
 
 
 if __name__ == "__main__":
